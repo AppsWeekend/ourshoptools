@@ -1,0 +1,172 @@
+<html>
+  <head>
+    <title>OurShopTools - Useful tools for e-commerce</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
+    <style>
+      * {
+        font-family: 'Nerko One', cursive;
+      }
+      body {
+        margin: 5px;
+      }
+
+      main {
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #FCD0A1;
+        border-radius: 15px;
+      }
+
+      main > .container {
+        width: fit-content;
+        text-align:center;
+      }
+
+      .btn-primary {
+        padding: 7px 15px;
+        border-radius: 5px;
+        background-color: #fff;
+        border: solid 2px #000;
+        margin-bottom: 5px;
+      }
+      
+      input[type="text"], input[type="email"] {
+        padding: 7px 15px;
+        border-radius: 5px;
+        background: transparent;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 5px;
+      }
+
+      section {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <!-- Intro Section -->
+        <section id="intro-section">
+          <h1>Tools for your Paystack Storefront</h1>
+          <button id="start-signup-flow" class="btn-primary">Set up custom domain</button>
+        </section>
+        <!-- End Intro Section -->
+
+        <!-- Store URL Section -->
+        <section id="store-url-section">
+          <h1>Enter your Paystack Storefront URL</h1>
+          <form action="" id="submit-store-url">
+            <input type="text" name="storeUrl" id="storeURL" placeholder="https://paystack.shop/your-store-name" required />
+            <button type="submit" class="btn-primary">Set up custom domain</button>
+          </form>
+        </section>
+        <!-- End Store URL Section -->
+
+        <!-- Custom Domain Section -->
+        <section id="custom-domain-section">
+          <h1>Enter your custom domain</h1>
+          <form action="" id="submit-custom-domain">
+            <input type="text" name="customDomain" id="customDomain" placeholder="https://your-store-name" required />
+            <button type="submit" class="btn-primary">Set up custom domain</button>
+            <button id="backToStoreURL" class="btn-primary">Go back</button>
+          </form>
+          <p class="dashed-underline"><span class="text-icon">?</span> How do I purchase a domain?</p>
+        </section>
+        <!-- End Custom Domain Section -->
+
+        <!-- Email Address Section -->
+        <section id="email-address-section">
+          <h1>Enter your email address</h1>
+          <form action="" id="submit-email-address">
+            <input type="email" name="emailAddress" id="emailAddress" placeholder="you@domain.com" required />
+            <button type="submit" class="btn-primary">Receive updates from us</button>
+            <button id="backToCustomDomain" class="btn-primary">Go back</button>
+          </form>
+          <a href="" id="skipEmail" class="dashed-underline">Skip this</a>
+        </section>
+        <!-- End Email Address Section -->
+
+        <!-- Provisioning Section -->
+        <section id="provisioning-section">
+          <h1>Please wait while we set things up...</h1>
+        </section>
+        <!-- End Provisioning Section -->
+      </div>
+    </main>
+  </body>
+  <script>
+    $ = (query, selectAll=false) => (
+      selectAll ?
+      document.querySelectorAll(query) :
+      document.querySelector(query)
+    )
+
+    const ROUTES = {
+      INDEX: "intro-section",
+      STORE_URL: "store-url-section",
+      CUSTOM_DOMAIN: "custom-domain-section",
+      EMAIL_ADDRESS: "email-address-section",
+      PROVISIONING: "provisioning-section"
+    };
+
+    let store_url = "";
+    let domain = "";
+    let email = "";
+
+    navigateTo = (page) => {
+      $("section", true).forEach(el => el.style.display = "none");
+      $(`#${page}`).style.display = "block";
+    }
+
+    provisionStorefront = () => {
+      xhr = new XMLHttpRequest();
+
+      xhr.addEventListener("load", () => {
+        const response = this.responseText;
+        console.log(response);
+      });
+
+      xhr.open("POST", "https://api.ourshop.tools/api/store");
+      xhr.setRequestHeader('Content-type', 'application/json');
+      xhr.send({
+        domain,
+        store_url,
+        email
+      });
+    }
+
+    navigateTo(ROUTES.INDEX);
+
+    $("#start-signup-flow").addEventListener("click", () => {
+      navigateTo(ROUTES.STORE_URL);
+    });
+
+    $("#submit-store-url").addEventListener("submit", (event) => {
+      event.preventDefault();
+      store_url = event.target.storeURL.value;
+      navigateTo(ROUTES.CUSTOM_DOMAIN);
+    });
+
+    $("#submit-custom-domain").addEventListener("submit", (event) => {
+      event.preventDefault();
+      domain = event.target.customDomain.value;
+      navigateTo(ROUTES.EMAIL_ADDRESS);
+    });
+
+    $("#submit-email-address").addEventListener("submit", (event) => {
+      event.preventDefault();
+      
+      email = event.target.emailAddress.value;
+      navigateTo(ROUTES.PROVISIONING);
+
+      provisionStorefront();
+    });
+  </script>
+</html>
