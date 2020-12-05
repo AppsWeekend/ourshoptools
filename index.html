@@ -185,11 +185,12 @@
 
       xhr.open("POST", "https://api.ourshop.tools/api/store");
       xhr.setRequestHeader('Content-type', 'application/json');
-      xhr.send({
+      xhr.setRequestHeader('Accept', 'application/json');
+      xhr.send(JSON.stringify({
         domain,
         store_url,
         email
-      });
+      }));
     }
 
     navigateTo(ROUTES.INDEX);
