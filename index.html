@@ -152,6 +152,24 @@
           <h1>Please wait while we set things up...</h1>
         </section>
         <!-- End Provisioning Section -->
+
+        <!-- Error Section -->
+        <section id="error-section">
+          <h1>There's been an error. Please try again shortly</h1>
+        </section>
+        <!-- End Error Section -->
+
+        <!-- Setup Section -->
+        <section id="setup-section">
+          <h1>Set up your custom domain</h1>
+          <ul>
+            <li>Go to your DNS Provider</li>
+            <li>Add new A records on <span id="yourDomainHolder"></span></li>
+            <li>Set the A record value to <span id="aRecordHolder"></span></li>
+            <li>Domain changes may take up to 48 hours</li>
+          </ul>
+        </section>
+        <!-- End Setup Section -->
       </div>
     </main>
   </body>
@@ -167,7 +185,9 @@
       STORE_URL: "store-url-section",
       CUSTOM_DOMAIN: "custom-domain-section",
       EMAIL_ADDRESS: "email-address-section",
-      PROVISIONING: "provisioning-section"
+      PROVISIONING: "provisioning-section",
+      ERROR: "error-section",
+      SETUP: "setup-section"
     };
 
     let store_url = "";
@@ -199,8 +219,14 @@
       xhr = new XMLHttpRequest();
 
       xhr.addEventListener("load", (event) => {
-        const response = event.responseText;
-        console.log(response);
+        if (event.target.readyState === 4 && event.target.status === 200) {
+          const response = JSON.parse(event.target.responseText);
+          $('#aRecordHolder').innerHTML = response.a_record;
+          $('#yourDomainHolder').innerHTML = domain;
+          navigateTo(ROUTES.SETUP);
+        } else {
+          navigateTo(ROUTES.ERROR);
+        }
       });
 
       xhr.open("POST", "https://api.ourshop.tools/api/store");
