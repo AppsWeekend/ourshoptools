@@ -68,7 +68,7 @@
         margin-bottom: 5px;
       }
       
-      input[type="text"], input[type="email"] {
+      input[type="text"], input[type="email"], input[type="url"] {
         padding: 7px 15px;
         border-radius: 5px;
         background: transparent;
@@ -113,7 +113,7 @@
         <section id="store-url-section">
           <h1>Enter your Paystack Storefront URL</h1>
           <form action="" id="submit-store-url">
-            <input type="text" name="storeUrl" id="storeURL" placeholder="https://paystack.shop/your-store-name" required />
+            <input type="text" name="storeUrl" id="storeURL" pattern="(https:\/\/)?(paystack.shop\/)([^\/\s]+)(.*)" placeholder="https://paystack.shop/your-store-name" required />
             <button type="submit" class="btn-primary">Set up custom domain</button>
           </form>
         </section>
@@ -123,7 +123,7 @@
         <section id="custom-domain-section">
           <h1>Enter your custom domain</h1>
           <form action="" id="submit-custom-domain">
-            <input type="text" name="customDomain" id="customDomain" placeholder="https://your-store-name" required />
+            <input type="url" name="customDomain" id="customDomain" placeholder="https://your-store-name" required />
             <button type="submit" class="btn-primary">Set up custom domain</button>
             <button id="backToStoreURL" class="btn-primary">Go back</button>
           </form>
@@ -219,5 +219,15 @@
 
       provisionStorefront();
     });
+
+    $("#backToStoreURL").addEventListener("click", (event) => {
+      event.preventDefault();
+      navigateTo(ROUTES.STORE_URL);
+    })
+
+    $("#backToCustomDomain").addEventListener("click", (event) => {
+      event.preventDefault();
+      navigateTo(ROUTES.STORE_URL);
+    })
   </script>
 </html>
