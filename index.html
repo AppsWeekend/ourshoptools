@@ -307,7 +307,7 @@
       xhr.addEventListener("load", (event) => {
         if (event.target.readyState === 4 && event.target.status === 200) {
           $("#provisionedDomainLink").innerHTML = domain;
-          $("#provisionedDomainLink").href = domain;
+          $("#provisionedDomainLink").href = `https://${domain}`;
 
           setTimeout( () => (navigateTo(ROUTES.SUCCESS)), 3000 );
         } else {
