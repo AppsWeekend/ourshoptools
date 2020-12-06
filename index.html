@@ -34,6 +34,12 @@
     <meta name="theme-color" content="#ffffff">
 
     <style>
+
+      :root {
+        --animate-duration: 2s;
+        --animate-delay: 0.9s;
+      }
+
       * {
         font-family: 'Nerko One', cursive;
       }
@@ -94,6 +100,7 @@
         margin: 0 auto;
         margin-bottom: 5px;
         width: 100%;
+        border: solid 2px #000;
       }
 
       section {
@@ -146,11 +153,11 @@
         <section id="custom-domain-section">
           <h1>Enter your custom domain</h1>
           <form action="" id="submit-custom-domain">
-            <input type="url" name="customDomain" id="customDomain" placeholder="https://your-store-name" required />
+            <input type="text" name="customDomain" id="customDomain" placeholder="your-store-name.com" required />
             <button type="submit" class="btn-primary">Set up custom domain</button>
             <button id="backToStoreURL" class="btn-primary">Go back</button>
           </form>
-          <p><span class="text-icon">?</span> <a href="" class="dashed-underline">How do I purchase a domain?</a></p>
+          <p><span class="text-icon">?</span> <a href="#" class="dashed-underline">How do I purchase a domain?</a></p>
         </section>
         <!-- End Custom Domain Section -->
 
@@ -162,7 +169,7 @@
             <button type="submit" class="btn-primary">Receive updates from us</button>
             <button id="backToCustomDomain" class="btn-primary">Go back</button>
           </form>
-          <a href="" id="skipEmail" class="dashed-underline">Skip this</a>
+          <a href="#" id="skipEmail" class="dashed-underline">Skip this</a>
         </section>
         <!-- End Email Address Section -->
 
@@ -187,8 +194,19 @@
             <li>Set the A record value to <span id="aRecordHolder"></span></li>
             <li>Domain changes may take up to 48 hours</li>
           </ul>
+          <button id="provisionDomain" class="btn-primary">I'm done with this</button>
+          <p><span class="text-icon">?</span> <a href="mailto:appswknd@gmail.com" class="dashed-underline">I don't know what to do</a></p>
         </section>
         <!-- End Setup Section -->
+
+        <!-- Success Section -->
+        <section id="success-section">
+          <h1>Success!</h1>
+          <p>Your storefront should go live soon</p>
+          <p>Visit <a id="provisionedDomainLink" class="dashed-underline" href="#"></a> to see.</p>
+          <p><span class="text-icon">?</span> Have any more questions? <a href="mailto:appswknd@gmail.com" class="dashed-underline">Shoot us an email</a></p>
+        </section>
+        <!-- End Success Section -->
       </div>
     </main>
   </body>
@@ -206,7 +224,8 @@
       EMAIL_ADDRESS: "email-address-section",
       PROVISIONING: "provisioning-section",
       ERROR: "error-section",
-      SETUP: "setup-section"
+      SETUP: "setup-section",
+      SUCCESS: "success-section"
     };
 
     let store_url = "";
@@ -216,18 +235,9 @@
     navigateTo = (page) => {
       const section = $("section.active");
       if (section) {
-        section.classList.add('animate__animated', 'animate__fadeOut');
-        console.log(section.dataset.animationendListener !== "true")
-        if (section.dataset.animationendListener !== "true") {
-          const handleAnimationEnd = () => {
-            section.setAttribute('data-animationend-listener', 'true');
-            section.classList.remove('animate__animated', 'animate__fadeOut', 'active');
-            visibleSection = $(`#${page}`);
-            visibleSection.classList.add('animate__animated', 'animate__fadeIn', 'active');
-            section.removeEventListener('animationend', handleAnimationEnd);
-          };
-          section.addEventListener('animationend', handleAnimationEnd);
-        }
+        section.classList.remove('active');
+        visibleSection = $(`#${page}`);
+        visibleSection.classList.add('animate__animated', 'animate__fadeIn', 'active');
       } else {
         visibleSection = $(`#${page}`);
         visibleSection.classList.add('animate__animated', 'animate__fadeIn', 'active');
@@ -235,6 +245,8 @@
     }
 
     provisionStorefront = () => {
+      navigateTo(ROUTES.PROVISIONING);
+      
       xhr = new XMLHttpRequest();
 
       xhr.addEventListener("load", (event) => {
@@ -280,10 +292,34 @@
       event.preventDefault();
       
       email = event.target.emailAddress.value;
-      navigateTo(ROUTES.PROVISIONING);
 
       provisionStorefront();
     });
+
+    $("#skipEmail").addEventListener("click", () => {
+      provisionStorefront();
+    });
+
+    $("#provisionDomain").addEventListener("click", () => {
+      navigateTo(ROUTES.PROVISIONING);
+      xhr = new XMLHttpRequest();
+
+      xhr.addEventListener("load", (event) => {
+        if (event.target.readyState === 4 && event.target.status === 200) {
+          $("#provisionedDomainLink").innerHTML = domain;
+          $("#provisionedDomainLink").href = domain;
+
+          setTimeout( () => (navigateTo(ROUTES.SUCCESS)), 3000 );
+        } else {
+          navigateTo(ROUTES.ERROR);
+        }
+      });
+
+      xhr.open("GET", `https://api.ourshop.tools/api/provision?domain=${domain}`);
+      xhr.setRequestHeader('Content-type', 'application/json');
+      xhr.setRequestHeader('Accept', 'application/json');
+      xhr.send();
+    })
 
     $("#backToStoreURL").addEventListener("click", (event) => {
       event.preventDefault();
@@ -292,7 +328,7 @@
 
     $("#backToCustomDomain").addEventListener("click", (event) => {
       event.preventDefault();
-      navigateTo(ROUTES.STORE_URL);
+      navigateTo(ROUTES.CUSTOM_DOMAIN);
     })
   </script>
 </html>
