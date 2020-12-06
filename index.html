@@ -41,8 +41,16 @@
         margin: 5px;
       }
 
+      header {
+        position: fixed;
+      }
+
       header .text-logo {
         margin:0;
+      }
+
+      .logo {
+        height: 100px;
       }
 
       main {
@@ -58,6 +66,16 @@
       main > .container {
         width: fit-content;
         text-align:center;
+        padding: 0 15px;
+      }
+
+      h1 {
+        font-size: 2.5em;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
       }
 
       .btn-primary {
@@ -75,6 +93,7 @@
         display: block;
         margin: 0 auto;
         margin-bottom: 5px;
+        width: 100%;
       }
 
       section {
@@ -102,7 +121,7 @@
   </head>
   <body>
     <header>
-      <h3 class="text-logo">OurShop.Tools</h3>
+      <img class="logo" src="/logo.png" />
     </header>
     <main>
       <div class="container">
@@ -131,7 +150,7 @@
             <button type="submit" class="btn-primary">Set up custom domain</button>
             <button id="backToStoreURL" class="btn-primary">Go back</button>
           </form>
-          <p class="dashed-underline"><span class="text-icon">?</span> How do I purchase a domain?</p>
+          <p><span class="text-icon">?</span> <a href="" class="dashed-underline">How do I purchase a domain?</a></p>
         </section>
         <!-- End Custom Domain Section -->
 
