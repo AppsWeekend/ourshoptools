@@ -36,207 +36,42 @@
   </head>
   <body>
     <header>
-      <img class="logo" src="/logo.png" />
+      <a href="/"><img class="logo" src="/logo.png" /></a>
     </header>
     <main>
       <div class="container">
-        <!-- Intro Section -->
-        <section id="intro-section">
-          <h1>Tools for your Paystack Storefront</h1>
-          <button id="start-signup-flow" class="btn-primary">Set up custom domain</button>
-        </section>
-        <!-- End Intro Section -->
 
-        <!-- Store URL Section -->
-        <section id="store-url-section">
-          <h1>Enter your Paystack Storefront URL</h1>
-          <form action="" id="submit-store-url">
-            <input type="text" name="storeUrl" id="storeURL" pattern="(https:\/\/)?(paystack.shop\/)([^\/\s]+)(.*)" placeholder="https://paystack.shop/your-store-name" required />
-            <button type="submit" class="btn-primary">Set up custom domain</button>
-          </form>
-        </section>
-        <!-- End Store URL Section -->
+        <!-- Intro div -->
+        <div class="hero">
+          <div id="intro-div">
+            <h1>Tools to supercharge your online store</h1>
+            <!-- <button id="start-signup-flow" class="btn-primary">Get started</button> -->
+          </div>
+        </div>
+        <!-- End Intro div -->
 
-        <!-- Custom Domain Section -->
-        <section id="custom-domain-section">
-          <h1>Enter your custom domain</h1>
-          <form action="" id="submit-custom-domain">
-            <input type="text" name="customDomain" id="customDomain" placeholder="your-store-name.com" required />
-            <button type="submit" class="btn-primary">Set up custom domain</button>
-            <button id="backToStoreURL" class="btn-primary">Go back</button>
-          </form>
-          <p><span class="text-icon">?</span> <a href="#" class="dashed-underline">How do I purchase a domain?</a></p>
-        </section>
-        <!-- End Custom Domain Section -->
-
-        <!-- Email Address Section -->
-        <section id="email-address-section">
-          <h1>Enter your email address</h1>
-          <form action="" id="submit-email-address">
-            <input type="email" name="emailAddress" id="emailAddress" placeholder="you@domain.com" required />
-            <button type="submit" class="btn-primary">Receive updates from us</button>
-            <button id="backToCustomDomain" class="btn-primary">Go back</button>
-          </form>
-          <a href="#" id="skipEmail" class="dashed-underline">Skip this</a>
-        </section>
-        <!-- End Email Address Section -->
-
-        <!-- Provisioning Section -->
-        <section id="provisioning-section">
-          <h1>Please wait while we set things up...</h1>
-        </section>
-        <!-- End Provisioning Section -->
-
-        <!-- Error Section -->
-        <section id="error-section">
-          <h1>There's been an error. Please try again shortly</h1>
-        </section>
-        <!-- End Error Section -->
-
-        <!-- Setup Section -->
-        <section id="setup-section">
-          <h1>Set up your custom domain</h1>
-          <ul>
-            <li>Go to your DNS Provider</li>
-            <li>Add new A records on <span id="yourDomainHolder"></span></li>
-            <li>Set the A record value to <span id="aRecordHolder"></span></li>
-            <li>Domain changes may take up to 48 hours</li>
-          </ul>
-          <button id="provisionDomain" class="btn-primary">I'm done with this</button>
-          <p><span class="text-icon">?</span> <a href="mailto:appswknd@gmail.com" class="dashed-underline">I don't know what to do</a></p>
-        </section>
-        <!-- End Setup Section -->
-
-        <!-- Success Section -->
-        <section id="success-section">
-          <h1>Success!</h1>
-          <p>Your storefront should go live soon</p>
-          <p>Visit <a id="provisionedDomainLink" class="dashed-underline" href="#"></a> to see.</p>
-          <p><span class="text-icon">?</span> Have any more questions? <a href="mailto:appswknd@gmail.com" class="dashed-underline">Shoot us an email</a></p>
-        </section>
-        <!-- End Success Section -->
+        <!-- Store URL div -->
+        <div id="select-provider-div">
+          <h2>Custom Domains</h2>
+          <p>Connect your custom domains to your online store pages</p>
+          <div class="select-provider-holder">
+            <div id="selectPaystack">
+              <div>
+                <h2>Paystack Storefront</h2>
+                <a href="/custom-domains/paystack" id="start-signup-flow" class="btn-primary">Get started</a>
+              </div>
+            </div>
+            <div id="selectFlutterwave">
+              <div>
+                <h2>Flutterwave Stores</h2>
+                <a href="/custom-domains/flutterwave" id="start-signup-flow" class="btn-primary">Get started</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Store URL div -->
       </div>
     </main>
   </body>
-  <script>
-    $ = (query, selectAll=false) => (
-      selectAll ?
-      document.querySelectorAll(query) :
-      document.querySelector(query)
-    )
-
-    const ROUTES = {
-      INDEX: "intro-section",
-      STORE_URL: "store-url-section",
-      CUSTOM_DOMAIN: "custom-domain-section",
-      EMAIL_ADDRESS: "email-address-section",
-      PROVISIONING: "provisioning-section",
-      ERROR: "error-section",
-      SETUP: "setup-section",
-      SUCCESS: "success-section"
-    };
-
-    let store_url = "";
-    let domain = "";
-    let email = "";
-
-    navigateTo = (page) => {
-      const section = $("section.active");
-      if (section) {
-        section.classList.remove('active');
-        visibleSection = $(`#${page}`);
-        visibleSection.classList.add('animate__animated', 'animate__fadeIn', 'active');
-      } else {
-        visibleSection = $(`#${page}`);
-        visibleSection.classList.add('animate__animated', 'animate__fadeIn', 'active');
-      }
-    }
-
-    provisionStorefront = () => {
-      navigateTo(ROUTES.PROVISIONING);
-      
-      xhr = new XMLHttpRequest();
-
-      xhr.addEventListener("load", (event) => {
-        if (event.target.readyState === 4 && event.target.status === 200) {
-          const response = JSON.parse(event.target.responseText);
-          $('#aRecordHolder').innerHTML = response.a_record;
-          $('#yourDomainHolder').innerHTML = domain;
-          navigateTo(ROUTES.SETUP);
-        } else {
-          navigateTo(ROUTES.ERROR);
-        }
-      });
-
-      xhr.open("POST", "https://api.ourshop.tools/api/store");
-      xhr.setRequestHeader('Content-type', 'application/json');
-      xhr.setRequestHeader('Accept', 'application/json');
-      xhr.send(JSON.stringify({
-        domain,
-        store_url,
-        email
-      }));
-    }
-
-    navigateTo(ROUTES.INDEX);
-
-    $("#start-signup-flow").addEventListener("click", () => {
-      navigateTo(ROUTES.STORE_URL);
-    });
-
-    $("#submit-store-url").addEventListener("submit", (event) => {
-      event.preventDefault();
-      store_url = event.target.storeURL.value;
-      navigateTo(ROUTES.CUSTOM_DOMAIN);
-    });
-
-    $("#submit-custom-domain").addEventListener("submit", (event) => {
-      event.preventDefault();
-      domain = event.target.customDomain.value;
-      navigateTo(ROUTES.EMAIL_ADDRESS);
-    });
-
-    $("#submit-email-address").addEventListener("submit", (event) => {
-      event.preventDefault();
-      
-      email = event.target.emailAddress.value;
-
-      provisionStorefront();
-    });
-
-    $("#skipEmail").addEventListener("click", () => {
-      provisionStorefront();
-    });
-
-    $("#provisionDomain").addEventListener("click", () => {
-      navigateTo(ROUTES.PROVISIONING);
-      xhr = new XMLHttpRequest();
-
-      xhr.addEventListener("load", (event) => {
-        if (event.target.readyState === 4 && event.target.status === 200) {
-          $("#provisionedDomainLink").innerHTML = domain;
-          $("#provisionedDomainLink").href = `https://${domain}`;
-
-          setTimeout( () => (navigateTo(ROUTES.SUCCESS)), 3000 );
-        } else {
-          navigateTo(ROUTES.ERROR);
-        }
-      });
-
-      xhr.open("GET", `https://api.ourshop.tools/api/provision?domain=${domain}`);
-      xhr.setRequestHeader('Content-type', 'application/json');
-      xhr.setRequestHeader('Accept', 'application/json');
-      xhr.send();
-    })
-
-    $("#backToStoreURL").addEventListener("click", (event) => {
-      event.preventDefault();
-      navigateTo(ROUTES.STORE_URL);
-    })
-
-    $("#backToCustomDomain").addEventListener("click", (event) => {
-      event.preventDefault();
-      navigateTo(ROUTES.CUSTOM_DOMAIN);
-    })
-  </script>
+  <script src="core.js"></script>
 </html>

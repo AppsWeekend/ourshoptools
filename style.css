@@ -23,19 +23,29 @@ header .text-logo {
 }
 
 main {
-  height: calc(100vh - 33px);
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: #FCD0A1;
   border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  padding-top: 100px;
+  min-height: calc(100vh - 33px);
 }
 
-main > .container {
-  width: fit-content;
+main#custom-domains-main {
+  height: calc(100vh - 33px);
+  width: 100%;
+  align-items: center;
+  padding-top: 0;
+}
+
+main .container {
+  width: 100%;
   text-align:center;
   padding: 0 15px;
+}
+
+main#custom-domains-main .container {
+  width: fit-content;
 }
 
 h1 {
@@ -86,4 +96,36 @@ section.active {
 
 .dashed-underline {
   border-bottom: 2px #000 dashed;
+}
+
+.select-provider-holder {
+  display: flex;
+  height: 300px;
+}
+
+.select-provider-holder div {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 0;
+}
+
+#selectPaystack {
+  background-color: #f9ebd7;
+}
+
+#selectFlutterwave {
+    background-color: #e8cdac;
+}
+
+@media (max-width: 425px) {
+  .select-provider-holder {
+    flex-direction: column;
+    height: auto;
+  }
+  .select-provider-holder div {
+    width: 100%;
+  }
 }

@@ -1,0 +1,116 @@
+<html>
+  <head>
+    <title>Set up custom domains for your Paystack Storefront | OurShopTools - Useful tools for e-commerce</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <meta name="description" content="Tools to take your commerce to the next level" />
+    <meta property="og:title" content="OurShopTools - Useful tools for e-commerce" />
+    <meta property="og:description" content="Tools to take your commerce to the next level" />
+    <meta property="og:image" content="/icons/android-icon-192x192.png" />
+    <meta property="og:url" content="https://OurShop.tools" />
+    <meta name="twitter:title" content="OurShopTools - Useful tools for e-commerce" />
+    <meta name="twitter:description" content="Tools to take your commerce to the next level" />
+    <meta name="twitter:image" content="/icons/android-icon-192x192.png" />
+    <meta name="twitter:card" content="summary" />
+
+    <link rel="apple-touch-icon" sizes="57x57" href="/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="manifest" href="/icons/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <header>
+      <a href="/"><img class="logo" src="/logo.png" /></a>
+    </header>
+    <main id="custom-domains-main">
+      <div class="container">
+        <!-- Store URL Section -->
+        <section id="store-url-section">
+          <h1>Enter your Paystack Storefront URL</h1>
+          <form action="" id="submit-store-url">
+            <input type="text" name="storeUrl" id="storeURL" pattern="(https:\/\/)?(paystack.shop\/)([^\/\s]+)(.*)" placeholder="https://paystack.shop/your-store-name" required />
+            <button type="submit" class="btn-primary">Set up custom domain</button>
+          </form>
+        </section>
+        <!-- End Store URL Section -->
+
+        <!-- Custom Domain Section -->
+        <section id="custom-domain-section">
+          <h1>Enter your custom domain</h1>
+          <p>Please put in a domain that you already own</p>
+          <form action="" id="submit-custom-domain">
+            <input type="text" name="customDomain" id="customDomain" placeholder="your-store-name.com" required />
+            <button type="submit" class="btn-primary">Set up custom domain</button>
+            <button id="backToStoreURL" class="btn-primary">Go back</button>
+          </form>
+        </section>
+        <!-- End Custom Domain Section -->
+
+        <!-- Email Address Section -->
+        <section id="email-address-section">
+          <h1>Enter your email address</h1>
+          <form action="" id="submit-email-address">
+            <input type="email" name="emailAddress" id="emailAddress" placeholder="you@domain.com" required />
+            <button type="submit" class="btn-primary">Receive updates from us</button>
+            <button id="backToCustomDomain" class="btn-primary">Go back</button>
+          </form>
+          <a href="#" id="skipEmail" class="dashed-underline">Skip this</a>
+        </section>
+        <!-- End Email Address Section -->
+
+        <!-- Provisioning Section -->
+        <section id="provisioning-section">
+          <h1>Please wait...</h1>
+        </section>
+        <!-- End Provisioning Section -->
+
+        <!-- Error Section -->
+        <section id="error-section">
+          <h1>There's been an error. Please try again shortly</h1>
+        </section>
+        <!-- End Error Section -->
+
+        <!-- Setup Section -->
+        <section id="setup-section">
+          <h1>Set up your custom domain</h1>
+          <ul>
+            <li>Go to your DNS Provider</li>
+            <li>Add new A records on <span id="yourDomainHolder"></span></li>
+            <li>Set the A record value to <span id="aRecordHolder"></span></li>
+            <li>Domain changes may take up to 48 hours</li>
+          </ul>
+          <button id="provisionDomain" class="btn-primary">I'm done with this</button>
+          <p><span class="text-icon">?</span> <a href="mailto:appswknd@gmail.com" class="dashed-underline">I don't know what to do</a></p>
+        </section>
+        <!-- End Setup Section -->
+
+        <!-- Success Section -->
+        <section id="success-section">
+          <h1>Success!</h1>
+          <p>Your storefront should go live soon</p>
+          <p>Visit <a id="provisionedDomainLink" class="dashed-underline" href="#"></a> to see.</p>
+          <p><span class="text-icon">?</span> Have any more questions? <a href="mailto:appswknd@gmail.com" class="dashed-underline">Shoot us an email</a></p>
+        </section>
+        <!-- End Success Section -->
+      </div>
+    </main>
+  </body>
+  <script src="/core.js"></script>
+  <script src="/custom-domains.js"></script>
+</html>
